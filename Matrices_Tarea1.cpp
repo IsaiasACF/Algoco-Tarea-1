@@ -123,6 +123,7 @@ void strassen(const vector<vector<int>>& A, const vector<vector<int>>& B, vector
         }
     }
 }
+
 void transposeMatrix(vector<vector<int>>& mat, vector<vector<int>>& transposed) {
     int rows = mat.size();       
     int cols = mat[0].size();  
@@ -161,22 +162,27 @@ void mulMat(vector<vector<int>>& mat1, vector<vector<int>>& mat2, vector<vector<
 * Parametro 5: int N2 - Numero de columnas de la segunda matriz.
 * Resumen: Multiplica mat1 y la matriz transpuesta de mat2 para optimizar el acceso a la memoria.
 */
-void mulMatTransposed(vector<vector<int>>& mat1, vector<vector<int>>& mat2, vector<vector<int>>& result, int M, int N2) {
-    // Crear una matriz transpuesta para mat2
-    vector<vector<int>> mat2T(N2, vector<int>(M)); 
-
-    transposeMatrix(mat2, mat2T); // Transponer mat2 de 1800x2300 a 2300x1800
+void mulMatTransposed(vector<vector<int>>& mat1, vector<vector<int>>& mat2, vector<vector<int>>& result, int M, int N) {
+    int K = mat1[0].size();  // Asumiendo que mat1 tiene al menos una fila y todas las filas tienen el mismo tamaño
     
-    // Multiplicar usando la matriz transpuesta de mat2
+    // Crear una matriz transpuesta para mat2
+    vector<vector<int>> mat2T(N, vector<int>(K)); 
+
+    transposeMatrix(mat2, mat2T); // Transponer mat2 de N*K a K*N
+    
+    // Multiplicar mat1 (MxK) por mat2T (NxK) -> El resultado es MxN
     for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N2; j++) {
+        for (int j = 0; j < N; j++) {
             result[i][j] = 0;
-            for (int k = 0; k < N2; k++) {
+            for (int k = 0; k < K; k++) {
                 result[i][j] += mat1[i][k] * mat2T[j][k];
             }
         }
     }
 }
+
+
+
 /*** printMatrix
 * Parametro 1: const vector<vector<int>>& mat - Matriz a imprimir.
 * Resumen: Imprime los elementos de la matriz en filas, formateando cada fila con corchetes y separando los elementos con comas para que parezca una matriz.
@@ -230,7 +236,7 @@ int main() {
     }
 
     if (N1 != M2) {
-        cerr << "Error: las dimensiones de las matrices no permiten la multiplicacion." << endl;
+        cerr << "Las dimensiones de las matrices no permiten la multiplicacion." << endl;
         return 1;
     }
 
