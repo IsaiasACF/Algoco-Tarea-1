@@ -124,13 +124,19 @@ void strassen(const vector<vector<int>>& A, const vector<vector<int>>& B, vector
     }
 }
 
+/*** transposeMatrix
+* Parametro 1: vector<vector<int>>& mat - Matriz original que se va a transponer.
+* Parametro 2: vector<vector<int>>& transposed - Matriz donde se almacenará la transpuesta.
+* Resumen: Transpone la matriz 'mat' y almacena el resultado en la matriz 'transposed'.
+*          La transposición intercambia las filas por las columnas de la matriz original.
+*/
 void transposeMatrix(vector<vector<int>>& mat, vector<vector<int>>& transposed) {
-    int rows = mat.size();       
-    int cols = mat[0].size();  
+    int rows = mat.size();     
+    int cols = mat[0].size();   
     
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            transposed[j][i] = mat[i][j];
+            transposed[j][i] = mat[i][j]; 
         }
     }
 }
